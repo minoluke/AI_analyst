@@ -36,7 +36,7 @@ def main():
     scripts = [
         ("BigQueryスキーマ抽出", "src/extract/extract_bigquery_schema.py"),
         ("スキーマから仮説を生成", "src/analysis/generate_hypotheses_from_schema.py"),
-        ("仮説検証パイプライン（統合版）", "src/analysis/hypothesis_validation_pipeline.py")
+        ("複数ステップ仮説検証パイプライン", "src/analysis/multi_step_hypothesis_validation_pipeline.py")
     ]
     
     # 各ステップを実行
