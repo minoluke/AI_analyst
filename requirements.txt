@@ -1,0 +1,12 @@
+# AI Analyst 依存パッケージ
+
+# 基本的なパッケージ
+python-dotenv>=1.0.0
+pandas>=2.0.0
+
+# Google Cloud
+google-cloud-bigquery>=3.11.0
+db-dtypes>=1.2.0
+
+# OpenAI
+openai>=1.0.0

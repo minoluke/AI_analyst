@@ -18,16 +18,27 @@ venv/
 ENV/
 .venv
 
-# データファイル
-*.csv
-*.json
-*.txt
+# データファイル（必要なファイルは個別に追加）
+# *.csv
+# *.json  
+# *.txt
 
-# レポート出力
-llm_responses/
-hypothesis_reports/
-quantitative_report.txt
+# 実行結果ファイルは除外
+results/llm_responses/*.json
+results/reports/*.txt
+results/reports/hypothesis_reports/*.txt
 hypothesis_results.csv
+
+data/**
+
+# ログファイル
+*.log
+hypothesis_validation.log
+
+# 一時ファイル
+.cache/
+.pytest_cache/
+*.tmp
 
 # IDE
 .vscode/
@@ -42,3 +53,6 @@ Thumbs.db
 
 # Google Cloud SDK
 google-cloud-sdk/
+
+# Requirements file (動的生成される場合)
+# requirements.txt

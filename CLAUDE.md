@@ -56,7 +56,9 @@ AI_analyst/
 - **SQL修正再帰ループ**: SQL実行エラー時に自動修正（最大5回）
 - **分析品質検証**: レポート品質チェックと自動改善（最大3回）
 - **詳細ログ出力**: 全プロセスの詳細ログを記録
+- **マークダウン除去**: OpenAI生成SQLの```sql```ブロック自動除去
 - **エラーハンドリング**: 各ステップでの適切なエラー処理
+- **実績**: 5件中2件の仮説検証成功（成功率40%）
 
 ## よく使うコマンド
 
@@ -88,6 +90,8 @@ python src/analysis/generate_hypotheses_from_schema.py
 
 # ステップ3: 仮説検証パイプライン（統合版）
 python src/analysis/hypothesis_validation_pipeline.py
+
+# 注意: 実行には約4-6分かかります（BigQuery + OpenAI API呼び出し）
 ```
 
 ### 依存関係
@@ -97,10 +101,18 @@ python src/analysis/hypothesis_validation_pipeline.py
 - `openai`
 - `pandas`
 - `python-dotenv`
+- `db-dtypes` (BigQuery結果のDataFrame変換用)
 
 インストール方法：
 ```bash
-pip install google-cloud-bigquery openai pandas python-dotenv
+pip install google-cloud-bigquery openai pandas python-dotenv db-dtypes
+```
+
+注意: condaユーザーは新しい環境での実行を推奨:
+```bash
+conda create -n ai-analyst python=3.12
+conda activate ai-analyst
+pip install -r requirements.txt
 ```
 
 ## 設定
@@ -154,6 +166,10 @@ gcloud auth application-default login
    - 出力結果は`results/`ディレクトリに配置
    - ユーティリティスクリプトは`scripts/`ディレクトリに配置
 
+8. **ログファイル**: 
+   - `hypothesis_validation.log` に詳細な実行ログが記録されます
+   - 各仮説のSQL生成・実行・分析過程を追跡できます
+
 ## 一般的なワークフロー
 
 1. 環境をセットアップ: `cp .env.example .env` を実行し、OpenAI APIキーを追加
@@ -164,3 +180,28 @@ gcloud auth application-default login
    - `results/reports/hypothesis_reports/` - 個別の仮説レポート
    - `results/reports/quantitative_report.txt` - 要約レポート
    - `results/llm_responses/` - 生成されたSQLクエリ
+   - `hypothesis_validation.log` - 実行ログ
+
+## トラブルシューティング
+
+### よくある問題と解決策
+
+1. **BigQuery認証エラー**:
+   ```bash
+   gcloud auth application-default login
+   ```
+
+2. **NumPy/pandas インポートエラー（conda環境）**:
+   ```bash
+   conda create -n ai-analyst python=3.12
+   conda activate ai-analyst
+   pip install -r requirements.txt
+   ```
+
+3. **SQL構文エラー**:
+   - 統合パイプラインが自動修正（最大5回）
+   - ログファイルで詳細なエラー情報を確認
+
+4. **API制限エラー**:
+   - OpenAI APIの利用制限を確認
+   - BigQuery無料枠の制限に注意

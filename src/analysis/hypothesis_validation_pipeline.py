@@ -129,6 +129,13 @@ SQLのみを出力してください（説明文は不要）：
             try:
                 sql = self.generate_sql_with_context(hypothesis, error_message)
                 
+                # SQLからマークダウンブロックを除去
+                if sql.startswith("```sql"):
+                    sql = sql[6:]  # ```sql を除去
+                if sql.endswith("```"):
+                    sql = sql[:-3]  # ``` を除去
+                sql = sql.strip()
+                
                 # SQLの妥当性チェック
                 if not sql or len(sql.strip()) < 20:
                     raise ValueError("生成されたSQLが短すぎます")
