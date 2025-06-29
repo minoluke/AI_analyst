@@ -1,0 +1,44 @@
+# 環境設定
+.env
+.env.local
+.env.*.local
+
+# APIキー
+*.key
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# データファイル
+*.csv
+*.json
+*.txt
+
+# レポート出力
+llm_responses/
+hypothesis_reports/
+quantitative_report.txt
+hypothesis_results.csv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Google Cloud SDK
+google-cloud-sdk/
