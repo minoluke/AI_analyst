@@ -20,6 +20,7 @@ from src.config import (
     HYPOTHESES_FILE,
     HYPOTHESIS_REPORTS_DIR
 )
+from src.config_analysis import get_analysis_config
 
 # ――― ログ設定 ―――
 logging.basicConfig(
@@ -33,9 +34,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ――― 設定 ―――
-SQL_RETRY_LIMIT = 5  # SQL修正の上限回数
-ANALYSIS_RETRY_LIMIT = 3  # 分析結果修正の上限回数
-MIN_REQUIRED_ROWS = 1  # 最低限必要な結果行数
+# 設定をconfig_analysis.pyから取得
+config = get_analysis_config()
+SQL_RETRY_LIMIT = config.processing.sql_retry_limit
+ANALYSIS_RETRY_LIMIT = config.processing.analysis_retry_limit
+MIN_REQUIRED_ROWS = config.processing.min_required_rows
 
 os.environ["GOOGLE_CLOUD_PROJECT"] = PROJECT_ID
 client = bigquery.Client(project=PROJECT_ID)
@@ -44,6 +47,7 @@ class HypothesisValidationPipeline:
     """仮説検証パイプライン"""
     
     def __init__(self):
+        self.config = get_analysis_config()
         self.schema_text = self.load_file(SCHEMA_TXT_FILE)
         self.data_exploration = self.load_file(DATA_EXPLORATION_FILE)
         self.hypotheses = self.load_hypotheses()
@@ -103,12 +107,12 @@ class HypothesisValidationPipeline:
 
 ## 要件
 1. 必ず実際に存在するイベント名を使用してください
-2. WHERE _TABLE_SUFFIX BETWEEN '20201101' AND '20210131' を含めてください
+2. WHERE {self.config.get_sql_date_filter()} を含めてください
 3. 結果には以下のカラムを含めてください：
    - step3_users: ステップ3のユーザー数
    - step4_users: ステップ4のユーザー数  
    - transition_rate: 遷移率 (step4_users / step3_users)
-4. デバイスカテゴリや流入元など、仮説の条件に合わせてセグメントしてください
+4. デバイスカテゴリ ({', '.join(self.config.device.categories)}) や流入元など、仮説の条件に合わせてセグメントしてください
 
 SQLのみを出力してください（説明文は不要）：
 """
@@ -122,8 +126,8 @@ SQLのみを出力してください（説明文は不要）：
         
         error_message = ""
         
-        for attempt in range(1, SQL_RETRY_LIMIT + 1):
-            logger.info(f"  試行 {attempt}/{SQL_RETRY_LIMIT}")
+        for attempt in range(1, self.config.processing.sql_retry_limit + 1):
+            logger.info(f"  試行 {attempt}/{self.config.processing.sql_retry_limit}")
             
             # SQL生成
             try:
@@ -162,7 +166,7 @@ SQLのみを出力してください（説明文は不要）：
                 if result_df.empty:
                     raise ValueError("クエリ結果が空です")
                 
-                if len(result_df) < MIN_REQUIRED_ROWS:
+                if len(result_df) < self.config.processing.min_required_rows:
                     raise ValueError(f"結果行数が不足しています: {len(result_df)}行")
                 
                 # 必要なカラムの存在確認
@@ -179,8 +183,8 @@ SQLのみを出力してください（説明文は不要）：
                 error_message = f"SQL実行エラー: {str(e)}"
                 logger.warning(f"  ⚠️ {error_message}")
                 
-                if attempt == SQL_RETRY_LIMIT:
-                    logger.error(f"  ❌ {hyp_id}: {SQL_RETRY_LIMIT}回試行後も失敗")
+                if attempt == self.config.processing.sql_retry_limit:
+                    logger.error(f"  ❌ {hyp_id}: {self.config.processing.sql_retry_limit}回試行後も失敗")
                     return None, error_message
         
         return None, error_message
@@ -266,8 +270,8 @@ SQLのみを出力してください（説明文は不要）：
         
         previous_error = ""
         
-        for attempt in range(1, ANALYSIS_RETRY_LIMIT + 1):
-            logger.info(f"  分析試行 {attempt}/{ANALYSIS_RETRY_LIMIT}")
+        for attempt in range(1, self.config.processing.analysis_retry_limit + 1):
+            logger.info(f"  分析試行 {attempt}/{self.config.processing.analysis_retry_limit}")
             
             try:
                 # レポート生成

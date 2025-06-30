@@ -9,7 +9,7 @@ load_dotenv(os.path.join(PROJECT_ROOT, '.env'))
 
 # ――― Google Cloud設定 ―――
 PROJECT_ID = os.getenv("GCP_PROJECT_ID", "ai-analyst-test-1")
-DATASET_ID = os.getenv("GCP_DATASET_ID", "bigquery-public-data.ga4_obfuscated_sample_ecommerce")
+DATASET_ID = os.getenv("GCP_DATASET_ID", "ga4_obfuscated_sample_ecommerce")
 
 # ――― OpenAI API設定 ―――
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")

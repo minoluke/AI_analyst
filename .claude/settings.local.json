@@ -9,7 +9,14 @@
       "Bash(conda list:*)",
       "Bash(python:*)",
       "Bash(pkill:*)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rm:*)",
+      "Bash(git rm:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

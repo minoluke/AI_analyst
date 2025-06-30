@@ -25,13 +25,26 @@ ENV/
 
 # 実行結果ファイルは除外
 results/llm_responses/*.json
+results/llm_responses/archive/
 results/reports/*.txt
+results/reports/*.md
 results/reports/hypothesis_reports/*.txt
+results/*.json
+results/archive/
 hypothesis_results.csv
 
 # データファイル（スキーマ・仮説は保持、探索データは除外）
 data/schemas/data_exploration.txt
 data/schemas/ga4_table_schema.csv
+
+# 仮説ファイル（実行時に生成されるため除外）
+data/hypotheses/hypotheses.json
+data/hypotheses/hypotheses_enhanced.json
+
+# LLM応答・仮説処理の中間ファイル
+H*.json
+H*_step*.json
+*_hypothesis_*.json
 
 # ログファイル
 *.log

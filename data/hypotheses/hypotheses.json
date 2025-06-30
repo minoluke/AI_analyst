@@ -1,50 +1,102 @@
 [
   {
     "id": "H001",
-    "summary": "商品追加後の離脱が多いのは、モバイルデバイス使用時にカートの操作が不便なためである。",
+    "summary": "デスクトップユーザーの購入率はモバイルユーザーより20%高い。",
     "conditions": {
-      "event_name": "add_to_cart",
-      "device": "mobile"
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
     },
-    "expected_outcome": "カート追加後の購入率が向上し、離脱が減少する。"
+    "expected_outcome": "デバイスに応じたマーケティング戦略が最適化され、売上向上につながる。"
   },
   {
     "id": "H002",
-    "summary": "チェックアウト画面の情報入力が複雑なため、離脱が発生している。",
+    "summary": "新規ユーザーの初回購入率はリピーターより15%低い。",
     "conditions": {
-      "event_name": "begin_checkout",
-      "device": "desktop",
-      "expected_add_shipping_info": "0"
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
     },
-    "expected_outcome": "チェックアウトプロセスの簡略化により、離脱率が低下する。"
+    "expected_outcome": "新規ユーザー向けのプロモーションを改善し、初回購入率が向上する可能性。"
   },
   {
     "id": "H003",
-    "summary": "初訪問ユーザーが商品紹介からカート追加に移行する際の障壁があるため、離脱が多い。",
+    "summary": "キャンペーン経由での購入率はオーガニック検索経由の購入率より25%高い。",
     "conditions": {
-      "event_name": "view_item",
-      "user_first_touch_timestamp": "last_30_days",
-      "expected_add_to_cart": "0"
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
     },
-    "expected_outcome": "初訪問ユーザーのカート追加率が向上する。"
+    "expected_outcome": "キャンペーンの効果を定量化することで、リソース配分をより効果的に行える。"
   },
   {
     "id": "H004",
-    "summary": "購入時に多くのユーザーが利用するクーポンやプロモーションが表示されないため、購入が減少している。",
+    "summary": "モバイルアプリ経由の購入率はデスクトップサイトより30%高い。",
     "conditions": {
-      "event_name": "add_payment_info",
-      "view_promotion": "0"
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
     },
-    "expected_outcome": "プロモーションを強化することで、購入率が向上する。"
+    "expected_outcome": "アプリの開発や改善への投資が費用対効果を高める。"
   },
   {
     "id": "H005",
-    "summary": "特定の流入元からのユーザーは高い離脱率を示しており、サイトの最適化が必要である。",
+    "summary": "最初のページビューから購入までの平均時間が5分以内のユーザーは、購入率が20%高い。",
     "conditions": {
-      "event_name": "session_start",
-      "traffic_source.source": "google",
-      "traffic_source.medium": "cpc"
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
     },
-    "expected_outcome": "流入元ごとに最適化したコンテンツにより、離脱が減少する。"
+    "expected_outcome": "初回接触時の促進策を強化することで、購買行動を刺激できる。"
+  },
+  {
+    "id": "H006",
+    "summary": "リダイレクトによるユーザーの離脱率は、ダイレクトトラフィックより要約して25%高い。",
+    "conditions": {
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
+    },
+    "expected_outcome": "リダイレクト方法を見直すことでユーザーエンゲージメントの向上が期待できる。"
+  },
+  {
+    "id": "H007",
+    "summary": "初回のエンゲージメント時間が30秒以下のユーザーは、購入率が40%低い。",
+    "conditions": {
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
+    },
+    "expected_outcome": "エンゲージメント施策が効果的になることにより、売上が改善される。"
+  },
+  {
+    "id": "H008",
+    "summary": "アイテムリストを閲覧したユーザーの購入率は、リストを閲覧していないユーザーより35%高い。",
+    "conditions": {
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
+    },
+    "expected_outcome": "商品のリスト表示方法を最適化し、購入促進につなげることができる。"
+  },
+  {
+    "id": "H009",
+    "summary": "最初の3ページビューでのエンゲージメントが高いユーザーは、購入率が22%高い。",
+    "conditions": {
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
+    },
+    "expected_outcome": "初期エンゲージメントを高める施策に投資することで、全体の売上向上につなげられる。"
+  },
+  {
+    "id": "H010",
+    "summary": "プロモーションを参照したユーザーの購入率は、非参照ユーザーより16%高い。",
+    "conditions": {
+      "event_name": "実際のGA4イベント",
+      "comparison_baseline": "比較基準",
+      "statistical_approach": "統計手法"
+    },
+    "expected_outcome": "プロモーション戦略を強化し、購入行動を促進する施策に繋げられる。"
   }
 ]
