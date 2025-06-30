@@ -29,16 +29,27 @@ results/reports/*.txt
 results/reports/hypothesis_reports/*.txt
 hypothesis_results.csv
 
-data/**
+# データファイル（スキーマ・仮説は保持、探索データは除外）
+data/schemas/data_exploration.txt
+data/schemas/ga4_table_schema.csv
 
 # ログファイル
 *.log
 hypothesis_validation.log
+multi_step_hypothesis_validation.log
+parallel_hypothesis_validation.log
+
+# セッションサマリー
+*session_summary.json
+openai_usage.log
 
 # 一時ファイル
 .cache/
 .pytest_cache/
 *.tmp
+
+# API利用ログ
+openai_usage.log
 
 # IDE
 .vscode/

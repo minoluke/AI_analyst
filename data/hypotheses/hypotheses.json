@@ -1,0 +1,50 @@
+[
+  {
+    "id": "H001",
+    "summary": "商品追加後の離脱が多いのは、モバイルデバイス使用時にカートの操作が不便なためである。",
+    "conditions": {
+      "event_name": "add_to_cart",
+      "device": "mobile"
+    },
+    "expected_outcome": "カート追加後の購入率が向上し、離脱が減少する。"
+  },
+  {
+    "id": "H002",
+    "summary": "チェックアウト画面の情報入力が複雑なため、離脱が発生している。",
+    "conditions": {
+      "event_name": "begin_checkout",
+      "device": "desktop",
+      "expected_add_shipping_info": "0"
+    },
+    "expected_outcome": "チェックアウトプロセスの簡略化により、離脱率が低下する。"
+  },
+  {
+    "id": "H003",
+    "summary": "初訪問ユーザーが商品紹介からカート追加に移行する際の障壁があるため、離脱が多い。",
+    "conditions": {
+      "event_name": "view_item",
+      "user_first_touch_timestamp": "last_30_days",
+      "expected_add_to_cart": "0"
+    },
+    "expected_outcome": "初訪問ユーザーのカート追加率が向上する。"
+  },
+  {
+    "id": "H004",
+    "summary": "購入時に多くのユーザーが利用するクーポンやプロモーションが表示されないため、購入が減少している。",
+    "conditions": {
+      "event_name": "add_payment_info",
+      "view_promotion": "0"
+    },
+    "expected_outcome": "プロモーションを強化することで、購入率が向上する。"
+  },
+  {
+    "id": "H005",
+    "summary": "特定の流入元からのユーザーは高い離脱率を示しており、サイトの最適化が必要である。",
+    "conditions": {
+      "event_name": "session_start",
+      "traffic_source.source": "google",
+      "traffic_source.medium": "cpc"
+    },
+    "expected_outcome": "流入元ごとに最適化したコンテンツにより、離脱が減少する。"
+  }
+]

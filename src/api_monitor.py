@@ -24,19 +24,23 @@ class APIUsageLog:
 class OpenAIAPIMonitor:
     """OpenAI API利用料金とリクエスト監視クラス"""
     
-    # 料金表 (2024年6月時点のGPT-4 Turbo料金)
+    # 料金表 (2024年12月時点の料金)
     PRICING = {
-        "gpt-4-turbo": {
-            "input": 0.01 / 1000,   # $0.01 per 1K input tokens
-            "output": 0.03 / 1000   # $0.03 per 1K output tokens
-        },
-        "gpt-4": {
-            "input": 0.03 / 1000,   # $0.03 per 1K input tokens  
-            "output": 0.06 / 1000   # $0.06 per 1K output tokens
+        "gpt-4o-mini": {
+            "input": 0.00015 / 1000,  # $0.00015 per 1K input tokens
+            "output": 0.0006 / 1000   # $0.0006 per 1K output tokens
         },
         "gpt-4o": {
-            "input": 0.005 / 1000,  # $0.005 per 1K input tokens
-            "output": 0.015 / 1000  # $0.015 per 1K output tokens
+            "input": 0.005 / 1000,    # $0.005 per 1K input tokens
+            "output": 0.015 / 1000    # $0.015 per 1K output tokens
+        },
+        "gpt-4-turbo": {
+            "input": 0.01 / 1000,     # $0.01 per 1K input tokens
+            "output": 0.03 / 1000     # $0.03 per 1K output tokens
+        },
+        "gpt-4": {
+            "input": 0.03 / 1000,     # $0.03 per 1K input tokens  
+            "output": 0.06 / 1000     # $0.06 per 1K output tokens
         }
     }
     
@@ -70,16 +74,18 @@ class OpenAIAPIMonitor:
         model_key = model.lower()
         
         # モデル名の正規化
-        if "gpt-4o" in model_key:
+        if "gpt-4o-mini" in model_key:
+            pricing = self.PRICING["gpt-4o-mini"]
+        elif "gpt-4o" in model_key:
             pricing = self.PRICING["gpt-4o"]
         elif "gpt-4-turbo" in model_key or "gpt-4.1" in model_key:
             pricing = self.PRICING["gpt-4-turbo"]
         elif "gpt-4" in model_key:
             pricing = self.PRICING["gpt-4"]
         else:
-            # デフォルトはGPT-4 Turbo料金
-            pricing = self.PRICING["gpt-4-turbo"]
-            self.logger.warning(f"Unknown model {model}, using gpt-4-turbo pricing")
+            # デフォルトはGPT-4o Mini料金
+            pricing = self.PRICING["gpt-4o-mini"]
+            self.logger.warning(f"Unknown model {model}, using gpt-4o-mini pricing")
         
         input_cost = prompt_tokens * pricing["input"]
         output_cost = completion_tokens * pricing["output"]

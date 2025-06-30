@@ -13,7 +13,7 @@ DATASET_ID = os.getenv("GCP_DATASET_ID", "bigquery-public-data.ga4_obfuscated_sa
 
 # ――― OpenAI API設定 ―――
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 # ――― ファイルパス設定 ―――
 SCHEMA_CSV_FILE = os.path.join(PROJECT_ROOT, "data", "schemas", "ga4_table_schema.csv")

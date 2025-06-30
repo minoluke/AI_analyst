@@ -1,0 +1,70 @@
+# GA4 Table Schema Definition
+Generated on: 2025-06-30 01:39:58
+Dataset: bigquery-public-data.ga4_obfuscated_sample_ecommerce
+
+## テーブル構造定義
+
+このファイルは GA4 events テーブルの構造定義（スキーマ）のみを記載しています。
+実際のデータ内容については data_exploration.txt を参照してください。
+
+
+## events_* (日次分割テーブル)
+
+**注意**: このテーブルは日付ごとに分割されています（events_20201101, events_20201102, ... events_20210131）
+すべて同じ構造を持つため、以下に代表的な構造を示します。
+
+**テーブル数**: 92個のテーブル
+**期間**: 20201101 ～ 20210131
+
+| フィールド名 | データ型 | モード | 説明 |
+|-------------|---------|-------|------|
+| event_date | STRING | NULLABLE | イベント発生日（YYYYMMDD形式） |
+| event_timestamp | INTEGER | NULLABLE | イベント発生タイムスタンプ（マイクロ秒） |
+| event_name | STRING | NULLABLE | イベント名（page_view, purchase等） |
+| event_params | RECORD | REPEATED | イベントパラメータ（key-value構造） |
+| event_previous_timestamp | INTEGER | NULLABLE | GA4標準フィールド |
+| event_value_in_usd | FLOAT | NULLABLE | イベント価値（米ドル） |
+| event_bundle_sequence_id | INTEGER | NULLABLE | GA4標準フィールド |
+| event_server_timestamp_offset | INTEGER | NULLABLE | GA4標準フィールド |
+| user_id | STRING | NULLABLE | ログイン済みユーザーID |
+| user_pseudo_id | STRING | NULLABLE | 匿名ユーザー識別子 |
+| privacy_info | RECORD | NULLABLE | プライバシー同意情報 |
+| user_properties | RECORD | REPEATED | ユーザー属性情報 |
+| user_first_touch_timestamp | INTEGER | NULLABLE | 初回接触タイムスタンプ |
+| user_ltv | RECORD | NULLABLE | ライフタイムバリュー |
+| device | RECORD | NULLABLE | デバイス情報（カテゴリ、OS等） |
+| geo | RECORD | NULLABLE | 地理情報（国、地域等） |
+| app_info | RECORD | NULLABLE | アプリ情報 |
+| traffic_source | RECORD | NULLABLE | 流入元情報（source, medium等） |
+| stream_id | INTEGER | NULLABLE | GA4標準フィールド |
+| platform | STRING | NULLABLE | GA4標準フィールド |
+| event_dimensions | RECORD | NULLABLE | GA4標準フィールド |
+| ecommerce | RECORD | NULLABLE | GA4標準フィールド |
+| items | RECORD | REPEATED | GA4標準フィールド |
+
+### ネストされたフィールドの詳細構造
+
+以下のRECORDタイプフィールドは複雑な構造を持ちます：
+
+
+## クエリ時の重要な注意事項
+
+1. **日次分割テーブルの参照方法**:
+   - 単一日: `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_20201101`
+   - 複数日（推奨）: `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*`
+   - 期間指定: `WHERE _TABLE_SUFFIX BETWEEN '20201101' AND '20210131'`
+
+2. **データ型について**:
+   - RECORDタイプ: ネストされた構造（上記詳細参照）
+   - REPEATEDモード: 配列として格納
+   - NULLABLEモード: NULL値を許可
+
+3. **パフォーマンス最適化**:
+   - 必ず日付範囲を指定してください（_TABLE_SUFFIX条件）
+   - 必要なフィールドのみを SELECT してください
+
+## 参考リンク
+
+- 実際のデータ内容とSQL例: data_exploration.txt
+- BigQuery公式ドキュメント: https://cloud.google.com/bigquery/docs/
+- GA4 BigQuery Export スキーマ: https://support.google.com/analytics/answer/7029846
